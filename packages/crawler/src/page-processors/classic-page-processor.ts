@@ -13,6 +13,7 @@ export class ClassicPageProcessor extends PageProcessorBase {
         this.logger.logInfo(`Processing loaded page.`, {
             url: context.page.url(),
         });
+        this.logger.logInfo(`*** DHT 2 *** with url = ${context.page.url()}, key = ${context.request.uniqueKey}`);
         await this.enqueueLinks(context);
         const axeResults = await this.accessibilityScanOp.run(
             context.page,

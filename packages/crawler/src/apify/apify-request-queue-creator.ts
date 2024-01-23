@@ -35,7 +35,8 @@ export class ApifyRequestQueueCreator implements ResourceCreator {
 
         const requestQueue = await Crawlee.RequestQueue.open(this.requestQueueName);
         if (baseUrl) {
-            await requestQueue.addRequest({ url: baseUrl.trim(), skipNavigation: true });
+            const trimmed = baseUrl.trim();
+            await requestQueue.addRequest({ url: trimmed, skipNavigation: true, uniqueKey: trimmed });
         }
         await this.addUrlsFromList(requestQueue, options?.inputUrls);
 
@@ -48,7 +49,8 @@ export class ApifyRequestQueueCreator implements ResourceCreator {
         }
 
         for (const url of inputUrls) {
-            await requestQueue.addRequest({ url: url.trim(), skipNavigation: true }, { forefront: true });
+            const trimmed = url.trim();
+            await requestQueue.addRequest({ url: trimmed, skipNavigation: true, uniqueKey: trimmed }, { forefront: true });
         }
     }
 

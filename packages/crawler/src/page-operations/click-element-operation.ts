@@ -29,10 +29,12 @@ export class ClickElementOperation {
             transformRequestFunction: (request) => {
                 navigated = true;
                 navigationUrl = request.url;
+                request.uniqueKey = `${request.url}#${selector}`;
                 this.logger.logInfo(`Click on element with matching CSS selector to scan a linked page.`, {
                     selector,
                     url: context.page.url(),
                     href: request.url,
+                    uniqueKey: request.uniqueKey,
                 });
 
                 return request;

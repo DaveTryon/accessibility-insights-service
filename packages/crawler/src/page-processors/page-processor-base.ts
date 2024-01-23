@@ -63,6 +63,7 @@ export abstract class PageProcessorBase implements PageProcessor {
                 return;
             }
 
+            this.logger.logInfo(`*** DHT 2.1 *** with url = ${context.request.url}, key = ${context.request.uniqueKey}`);
             await this.setOrigin(context.request.url, context.page);
             response = await this.pageNavigator.navigate(context.request.url, context.page);
             if (response.browserError) {
@@ -164,13 +165,24 @@ export abstract class PageProcessorBase implements PageProcessor {
         context.request.loadedUrl = context.page.url();
 
         try {
+            const x = this.discoveryPatterns.map((p) => new RegExp(p));
+
+            this.logger.logInfo(`*** DHT 5 *** ${x}`);
+
             const enqueued = await context.enqueueLinks({
                 // eslint-disable-next-line security/detect-non-literal-regexp
                 regexps: this.discoveryPatterns?.length > 0 ? this.discoveryPatterns.map((p) => new RegExp(p)) : undefined,
+                transformRequestFunction: (request) => {
+                    request.uniqueKey = request.url;
+                    return request;
+                }
             });
             this.logger.logInfo(`Enqueued ${enqueued.processedRequests.length} new links.`, {
-                url: context.page.url(),
-            });
+                url: context.page.url(), 
+                });
+            for (const request of enqueued.processedRequests) {
+                this.logger.logInfo(`*** DHT 6 *** ${request.uniqueKey} `);
+            };
         } catch (error) {
             if ((error as Error).message?.includes('pQuerySelectorAll is not a function')) {
                 this.logger.logError(

@@ -5,7 +5,7 @@ import * as normalizeUrlExt from 'normalize-url';
 
 export namespace Url {
     export function normalizeUrl(url: string): string {
-        return normalizeUrlExt.default(url, { stripHash: true, removeQueryParameters: false });
+        return normalizeUrlExt.default(url, { stripHash: false, removeQueryParameters: false });
     }
 
     export function hasQueryParameters(url: string): boolean {

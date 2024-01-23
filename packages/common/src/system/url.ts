@@ -39,7 +39,7 @@ export namespace Url {
             normalizeProtocol: false,
             removeSingleSlash: false,
             removeTrailingSlash: false,
-            stripHash: true,
+            stripHash: false,
             stripTextFragment: true,
             stripWWW: false,
         };

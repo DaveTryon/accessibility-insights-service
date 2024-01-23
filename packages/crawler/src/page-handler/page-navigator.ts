@@ -64,8 +64,9 @@ export class PageNavigator {
 
     private createPageOperation(page: Puppeteer.Page, url?: string): PageOperation {
         return async () => {
-            this.logger?.logInfo('Navigate page to URL.', { url });
+            this.logger?.logInfo('Navigate page to URL. (AHOY)', { url });
             const response = await page.goto(url, this.waitForOptions);
+            this.logger?.logInfo(`Navigated to page: ${response.url()}`)
 
             return response;
         };
